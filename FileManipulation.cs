@@ -19,7 +19,7 @@ namespace memorypagination
 					foreach(string line in allLines){
 						//Número de molduras de página na memória|número de páginas do processo|sequência em que as páginas são acessadas
 						string[] info = line.Split('|');
-						MemoryProcess mp = new MemoryProcess(Convert.ToInt32(info[0]), Convert.ToInt32(info[1]), info[2]);
+						MemoryProcess mp = new MemoryProcess(Convert.ToInt32(info[0]), Convert.ToInt32(info[1]), info[2].Replace("\r", ""));
 						list.Add(mp);
 					}
 				}
