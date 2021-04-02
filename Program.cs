@@ -28,6 +28,7 @@ namespace memorypagination
                 if(process.Frames.Count < process.AmountOfFrames && !process.Frames.Contains(currentPage)){
                     process.Frames.Insert(index, currentPage);
                     ++index;
+                    ++changesAmount;
                 }else if(process.Frames.Contains(currentPage)){ //Se conter a página na moldura atual, apenas continua
                     continue;
                 }else{
@@ -70,6 +71,7 @@ namespace memorypagination
                     IncreaseTime(aux, pos);
                     pos[index] = 0;
                     ++index;
+                    ++changesAmount;
                 }else if(process.Frames.Contains(currentPage)){ //Página repetida 
                     IncreaseTime(aux, pos);
                     pos[process.Frames.IndexOf(currentPage)] = 0;
@@ -97,6 +99,7 @@ namespace memorypagination
                     process.Frames.Insert(index, currentPage);
                     ++pagesAccess[currentPage - 1];
                     ++index;
+                    ++changesAmount;
                 }else if(process.Frames.Contains(currentPage)){ //Página repetida
                     ++pagesAccess[currentPage - 1];
                 }
@@ -122,6 +125,7 @@ namespace memorypagination
                     process.Frames.Insert(index, currentPage);
                     ++index;
                     ++aux;
+                    ++changesAmount;
                 }else if(process.Frames.Contains(currentPage)){ //Página repetida
                     ++aux;
                 }else{ //Moldura preenchida
@@ -200,8 +204,8 @@ namespace memorypagination
 
             int[] changesAmount = new int[4];
             int min = 0;
-            int best = 0;
             string betterAlg = string.Empty;
+            bool simpleOutput = true;
 
             for(int i = 0; i < processes.Count; ++i){
                 MemoryProcess currentProcess = processes[i];
@@ -237,12 +241,19 @@ namespace memorypagination
                 }
 
                 betterAlg = betterAlg.Substring(0, betterAlg.Length - 1); //Remove última virgula
-                Console.WriteLine(string.Format("Avaliação dos algoritmos (por trocas):\n--> FIFO [{0}]\n--> MRU [{1}]\n--> NFU [{2}]\n--> Ótimo [{3}]\n--> Melhor(es): [{4}]", changesAmount[0], changesAmount[1], changesAmount[2], changesAmount[3], betterAlg));
+                if(simpleOutput){
+                    string aux = betterAlg;
+                    if(betterAlg.Equals("FIFO,MRU,NUF,Otimo"))
+                        aux = "Empate";
+                    Console.WriteLine(string.Format("{0}|{1}|{2}|{3}|{4}", changesAmount[0], changesAmount[1], changesAmount[2], changesAmount[3], aux));
+                }else{
+                    Console.WriteLine(string.Format("Avaliação dos algoritmos (por trocas):\n--> FIFO [{0}]\n--> MRU [{1}]\n--> NFU [{2}]\n--> Ótimo [{3}]\n--> Melhor(es): [{4}]", changesAmount[0], changesAmount[1], changesAmount[2], changesAmount[3], betterAlg));
+                }
                 betterAlg = string.Empty;
 
             }
 
-            Console.ReadKey();
+            Console.WriteLine("Fim");
         }
     }
 }
